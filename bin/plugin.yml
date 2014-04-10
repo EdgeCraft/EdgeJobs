@@ -1,0 +1,8 @@
+name: EdgeJobs
+version: 0.2
+author: lush
+website: http://www.edgecraft.de
+
+depend: [EdgeCore, EdgeConomy, EdgeCuboid]
+
+main: net.edgecraft.edgejobs.EdgeJobs
