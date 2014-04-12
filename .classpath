@@ -5,6 +5,6 @@
 	<classpathentry kind="lib" path="lib/bukkit.jar"/>
 	<classpathentry kind="lib" path="lib/EdgeConomy.jar"/>
 	<classpathentry kind="lib" path="lib/EdgeCuboid.jar"/>
-	<classpathentry kind="lib" path="/home/tim/devel/EdgeCraft/EdgeCore/EdgeCore.jar"/>
+	<classpathentry kind="lib" path="lib/EdgeCore.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
