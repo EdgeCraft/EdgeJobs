@@ -14,6 +14,7 @@ public class JobCommands {
 	
 	private JobCommands() {
 		registerCommand( JobCommand.getInstance() );
+		registerCommand( JobsCommand.getInstance() );
 		registerCommand( Doctor.HealCommand.getInstance() );
 		registerCommand( Firefighter.FireCommand.getInstance() );
 		registerCommand( Criminal.CocaineCommand.getInstance() );
