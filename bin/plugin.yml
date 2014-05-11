@@ -1,6 +1,6 @@
 name: EdgeJobs
 version: 0.2
-author: lush
+authors: [lush, horoking]
 website: http://www.edgecraft.de
 
 depend: [EdgeCore, EdgeConomy, EdgeCuboid]

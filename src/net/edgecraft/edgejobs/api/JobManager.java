@@ -1,9 +1,16 @@
 package net.edgecraft.edgejobs.api;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
+import net.edgecraft.edgecore.EdgeCoreAPI;
 import net.edgecraft.edgecore.user.User;
+import net.edgecraft.edgecore.user.UserManager;
+import net.edgecraft.edgejobs.EdgeJobs;
 
 import org.bukkit.entity.Player;
 
@@ -180,6 +187,36 @@ public class JobManager {
 	public ArrayList<AbstractSidejob> getSidejobs() { return _sidejobs; }
 	public ArrayList<String> getWorking() { return _working; }
 	public HashMap<String, AbstractJob> getWorkers() { return _workers; }
+	
+	public void syncJobs(){
+
+		try {
+			
+			List<Map<String, Object>> result = EdgeCoreAPI.databaseAPI().getResults("SELECT * FROM edgejobs_jobs;");
+			
+			for(Map<String, Object> r : result){
+				JobManager.getInstance().registerWorker(UserManager.getInstance().getUser(UUID.fromString((String) r.get("uuid"))), JobManager.getInstance().getJob(JobManager.getInstance().getJob((String) r.get("job"))));
+			}
+			
+			for(User u : UserManager.getInstance().getUsers().values()){
+				PreparedStatement ps = EdgeCoreAPI.databaseAPI().prepareStatement("INSERT INTO edgejobs_jobs (uuid, job) VALUES (?, ?);");
+				
+				if(!hasJob(u)){
+					ps.setString(1, u.getUUID().toString());
+					ps.setString(2, "");
+				}
+				else{
+					ps.setString(1, u.getUUID().toString());
+					ps.setString(2, getJob(u.getPlayer()).getName());
+				}
+				ps.execute();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public static final JobManager getInstance() { return instance; }
 }

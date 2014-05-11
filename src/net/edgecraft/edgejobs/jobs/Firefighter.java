@@ -80,7 +80,9 @@ public class Firefighter extends AbstractJob {
 		
 		private void setRandomFire()
 		{
-			final Cuboid random = cuboids.getCuboid( CuboidType.Survival, false );
+			final Cuboid random = CuboidHandler.getCuboid( CuboidType.SURVIVAL, false );
+			
+			if(random == null) return; // If there is no Survival-Cuboid, skip
 			
 			random.getMinLocation().add(0, 1, 0).getBlock().setType(Material.FIRE);
 			random.getMaxLocation().add(0, 1, 0).getBlock().setType(Material.FIRE);
@@ -121,7 +123,7 @@ public class Firefighter extends AbstractJob {
 	
 	@Override
 	public CuboidType whereToStart() {
-		return CuboidType.FireStation;
+		return CuboidType.FIRESTATION;
 	}
 	
 }
