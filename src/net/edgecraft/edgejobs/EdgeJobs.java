@@ -62,7 +62,7 @@ public class EdgeJobs extends JavaPlugin {
 	}
 	
 	private void registerCommands() {
-		commands.registerCommand( new CommandContainer( JobCommands.getInstance() ) );
+		JobCommands.getInstance();
 	}
 	
 	private void registerHandlers() {
