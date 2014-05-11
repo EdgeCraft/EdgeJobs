@@ -54,7 +54,12 @@ public class Doctor extends AbstractJob {
 			
 			final Player targetPlayer = target.getPlayer();
 			
-			if( Cuboid.getCuboid( p.getLocation() ).equals( Cuboid.getCuboid( targetPlayer.getLocation() ) ) )
+			if(Cuboid.getCuboid( p.getLocation() ) == null || Cuboid.getCuboid( targetPlayer.getLocation() ) == null){
+				p.sendMessage(lang.getColoredMessage("de", "job_doctor_heal_both"));
+				return false;
+			}
+			
+			if( Cuboid.getCuboid( p.getLocation() ).getType().equals( CuboidType.HOSPITAL ) && Cuboid.getCuboid( targetPlayer.getLocation() ).getType().equals( Cuboid.getCuboid( p.getLocation() )))
 			{
 				targetPlayer.addPotionEffect( new PotionEffect( PotionEffectType.REGENERATION, 20 * 5, 2 ) );
 				targetPlayer.setHealth( targetPlayer.getMaxHealth() );
@@ -72,7 +77,7 @@ public class Doctor extends AbstractJob {
 
 		@Override
 		public boolean validArgsRange( String[] args ) {
-			return ( args.length == 1 );
+			return ( args.length == 2 );
 		}
 		
 		
