@@ -42,13 +42,20 @@ public class JobCommand extends AbstractCommand {
 				return true;
 			}
 			
+			if(!JobManager.getInstance().hasJob(p)){
+				p.sendMessage(lang.getColoredMessage("de", "job_nojob"));
+				return true;
+			}
+			
 			AbstractJob job = jobs.getJob( u );
 			
 			if( args.length == 3 )
 				job = jobs.getJob( args[2] );
 			
-			if( job == null )
+			if( job == null ) {
 				p.sendMessage( lang.getColoredMessage( userLang, "job_notfound" ) );
+				return true;
+			}
 			
 			boolean joined = job.join( p );
 			
@@ -63,6 +70,11 @@ public class JobCommand extends AbstractCommand {
 		if( args[1].equalsIgnoreCase( "leave" ) && args.length == 2 ) {
 			
 			final AbstractJob job = jobs.getJob( u );
+			
+			if(job == null){
+				p.sendMessage(lang.getColoredMessage("de", "job_nojob"));
+				return true;
+			}
 			
 			boolean quit = job.leave( p );
 			
@@ -82,6 +94,16 @@ public class JobCommand extends AbstractCommand {
 			final User target = users.getUser( args[2] );
 			final AbstractJob job = jobs.getJob( args[3] );
 			
+			if(target == null){
+				p.sendMessage(lang.getColoredMessage("de", "notfound"));
+				return true;
+			}
+			
+			if(job == null){
+				p.sendMessage(lang.getColoredMessage("de", "job_notfound"));
+				return true;
+			}
+			
 			if( !Level.canUse( target, Level.USER ) ) {
 				p.sendMessage( lang.getColoredMessage( userLang, "job_setjob_noperm" ) );
 				return false;
@@ -100,6 +122,11 @@ public class JobCommand extends AbstractCommand {
 		
 		if( args[1].equalsIgnoreCase( "getjob" ) && args.length == 3 ) {
 			final User target = users.getUser( args[2] );
+			
+			if(target == null){
+				p.sendMessage(lang.getColoredMessage("de", "notfound"));
+				return true;
+			}
 			
 			if( !jobs.hasJob( target ) ) {
 				p.sendMessage( lang.getColoredMessage( userLang, "job_nojob" ) );
