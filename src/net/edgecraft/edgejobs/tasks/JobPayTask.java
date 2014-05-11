@@ -41,7 +41,7 @@ public class JobPayTask extends BukkitRunnable {
 				if( job == null || job instanceof AbstractSidejob ) continue;
 				
 				final BankAccount state = economy.getAccount( 0 );
-				final BankAccount target = economy.getAccount( u.getID() );
+				final BankAccount target = economy.getAccount( u.getUUID() );
 				final String message = lang.getColoredMessage( u.getLang(), "job_transaction" );
 				
 				transactions.addTransaction( state, target, job.getPay(), message );
