@@ -70,7 +70,7 @@ public class HandlePlayerEvents implements Listener {
 		{
 			e.setCancelled( true );
 			
-			p.teleport( cuboids.getNearestCuboid( CuboidType.Hospital, p.getLocation()).getSpawn() );
+			p.teleport( cuboids.getNearestCuboid( CuboidType.HOSPITAL, p.getLocation()).getSpawn() );
 			//p.getInventory().setContents( AbstractJob.getOldPlayerInventory(p).getContents() );
 			jobs.setWorking( p, false );
 			jobs.getJob( p ).unequipPlayer( p );

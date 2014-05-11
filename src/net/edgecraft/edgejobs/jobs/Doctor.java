@@ -24,7 +24,7 @@ public class Doctor extends AbstractJob {
 	
 	
 	@Override
-	public CuboidType whereToStart() { return CuboidType.Hospital; }
+	public CuboidType whereToStart() { return CuboidType.HOSPITAL; }
 	
 	public static class HealCommand extends AbstractJobCommand {
 
