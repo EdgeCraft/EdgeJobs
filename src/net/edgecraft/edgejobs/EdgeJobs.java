@@ -4,8 +4,6 @@ import java.util.logging.Logger;
 
 import net.edgecraft.edgecore.EdgeCore;
 import net.edgecraft.edgecore.EdgeCoreAPI;
-import net.edgecraft.edgecore.command.CommandContainer;
-import net.edgecraft.edgecore.command.CommandHandler;
 import net.edgecraft.edgejobs.api.JobManager;
 import net.edgecraft.edgejobs.cmds.JobCommands;
 import net.edgecraft.edgejobs.events.HandleItemEvents;
@@ -17,6 +15,7 @@ import net.edgecraft.edgejobs.jobs.Farmer;
 import net.edgecraft.edgejobs.jobs.Firefighter;
 import net.edgecraft.edgejobs.jobs.Miner;
 import net.edgecraft.edgejobs.jobs.Timber;
+import net.edgecraft.edgejobs.tasks.DBSyncJobTask;
 import net.edgecraft.edgejobs.tasks.JobPayTask;
 import net.edgecraft.edgejobs.tasks.SidejobPayTask;
 
@@ -26,14 +25,30 @@ public class EdgeJobs extends JavaPlugin {
 
 	public static final Logger log = EdgeCore.log;
 	private static EdgeJobs instance;
+	private static final String jobsTable = "edgejobs_jobs";
 	
 	private static final JobManager _jobs = JobManager.getInstance();
 	
 	@Override
 	public void onLoad() {
 		instance = this;
+		
+		// Database
+		// Check for jobs table | (c) by Panjab
+		try {
+			EdgeCoreAPI
+					.databaseAPI()
+					.prepareStatement(
+							"CREATE TABLE IF NOT EXISTS " + EdgeJobs.jobsTable
+									+ " (uuid VARCHAR(36) NOT NULL, "
+									+ "job VARCHAR(16) NOT NULL DEFAULT '');")
+					.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
-	
+
 	@Override
 	public void onEnable() {
 		
@@ -43,6 +58,8 @@ public class EdgeJobs extends JavaPlugin {
 		registerHandlers();
 		
 		Firefighter.FireCommand.getInstance().fire();
+		
+		new DBSyncJobTask().runTaskTimer(this, 0, 20L * 60 * 25);
 		
 		log.info( "[EdgeJobs] enabled." );
 	}

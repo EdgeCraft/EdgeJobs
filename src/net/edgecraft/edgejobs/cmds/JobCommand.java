@@ -117,10 +117,14 @@ public class JobCommand extends AbstractCommand {
 			else key = "job_setjob_failure";
 			
 			p.sendMessage( lang.getColoredMessage( userLang, key ) );
+			JobManager.getInstance().syncJobs();
 			return set;
 		}
 		
 		if( args[1].equalsIgnoreCase( "getjob" ) && args.length == 3 ) {
+			
+			JobManager.getInstance().syncJobs();
+			
 			final User target = users.getUser( args[2] );
 			
 			if(target == null){
