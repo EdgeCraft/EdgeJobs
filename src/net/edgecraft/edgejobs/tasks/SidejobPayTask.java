@@ -33,7 +33,7 @@ public class SidejobPayTask extends BukkitRunnable {
 			
 			if( ((AbstractSidejob) job).hasDoneWork() ) {
 				final BankAccount state = economy.getAccount(0);
-				final BankAccount user = economy.getAccount(u.getID());
+				final BankAccount user = economy.getAccount(u.getUUID());
 				final String message = EdgeCoreAPI.languageAPI().getColoredMessage( u.getLanguage(), "job_transaction");
 				
 				transactions.addTransaction(state, user, job.getPay(), message);
