@@ -27,8 +27,6 @@ public class EdgeJobs extends JavaPlugin {
 	public static final Logger log = EdgeCore.log;
 	private static EdgeJobs instance;
 	
-	private static final CommandHandler commands = EdgeCoreAPI.commandsAPI();
-	
 	private static final JobManager _jobs = JobManager.getInstance();
 	
 	@Override
