@@ -104,7 +104,7 @@ public class JobCommand extends AbstractCommand {
 				return true;
 			}
 			
-			if( !Level.canUse( target, Level.USER ) ) {
+			if( !Level.canUse( target, Level.SUPPORTER ) ) {
 				p.sendMessage( lang.getColoredMessage( userLang, "job_setjob_noperm" ) );
 				return false;
 			}
