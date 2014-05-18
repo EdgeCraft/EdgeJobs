@@ -10,7 +10,6 @@ import java.util.UUID;
 import net.edgecraft.edgecore.EdgeCoreAPI;
 import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgecore.user.UserManager;
-import net.edgecraft.edgejobs.EdgeJobs;
 
 import org.bukkit.entity.Player;
 
@@ -199,6 +198,7 @@ public class JobManager {
 			}
 			
 			for(User u : UserManager.getInstance().getUsers().values()){
+				
 				PreparedStatement ps = EdgeCoreAPI.databaseAPI().prepareStatement("INSERT INTO edgejobs_jobs (uuid, job) VALUES (?, ?);");
 				
 				if(!hasJob(u)){
@@ -207,7 +207,7 @@ public class JobManager {
 				}
 				else{
 					ps.setString(1, u.getUUID().toString());
-					ps.setString(2, getJob(u.getPlayer()).getName());
+					ps.setString(2, getJob(u).getName());
 				}
 				ps.execute();
 			}
