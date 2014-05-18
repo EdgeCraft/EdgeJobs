@@ -52,6 +52,7 @@ public class HandleItemEvents implements Listener {
 	{
 		final Player p = e.getPlayer();
 		final User u = users.getUser( p.getName() );
+		if(Cuboid.getCuboid( p.getLocation() ) == null) return;
 		final CuboidType t = Cuboid.getCuboid( p.getLocation() ).getType();
 		
 		if( p == null || u == null || t == null ) return;
@@ -68,6 +69,7 @@ public class HandleItemEvents implements Listener {
 	{
 		final Player p = e.getPlayer();
 		final User u = users.getUser( p.getName() );
+		if(Cuboid.getCuboid( p.getLocation() ) == null) return;
 		final CuboidType t = Cuboid.getCuboid( p.getLocation() ).getType();
 		
 		if( p == null || u == null || t == null ) return;

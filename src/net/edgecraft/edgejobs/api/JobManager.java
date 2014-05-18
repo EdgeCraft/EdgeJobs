@@ -194,26 +194,61 @@ public class JobManager {
 			List<Map<String, Object>> result = EdgeCoreAPI.databaseAPI().getResults("SELECT * FROM edgejobs_jobs;");
 			
 			for(Map<String, Object> r : result){
-				JobManager.getInstance().registerWorker(UserManager.getInstance().getUser(UUID.fromString((String) r.get("uuid"))), JobManager.getInstance().getJob(JobManager.getInstance().getJob((String) r.get("job"))));
-			}
-			
-			for(User u : UserManager.getInstance().getUsers().values()){
 				
-				PreparedStatement ps = EdgeCoreAPI.databaseAPI().prepareStatement("INSERT INTO edgejobs_jobs (uuid, job) VALUES (?, ?);");
+				AbstractJob job = JobManager.getInstance().getJob((String) r.get("job"));
+				UUID uuid = UUID.fromString((String) r.get("uuid"));
 				
-				if(!hasJob(u)){
-					ps.setString(1, u.getUUID().toString());
-					ps.setString(2, "");
-				}
-				else{
-					ps.setString(1, u.getUUID().toString());
-					ps.setString(2, getJob(u).getName());
-				}
-				ps.execute();
+				JobManager.getInstance().registerWorker(UserManager.getInstance().getUser(uuid), JobManager.getInstance().getJob(job));
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		
+	}
+	
+	private boolean containsDB(UUID uuid){
+		List<Map<String, Object>> result = null;
+		try {
+			result = EdgeCoreAPI.databaseAPI().getResults("SELECT * FROM edgejobs_jobs;");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(result == null) return false;
+		
+		for(Map<String, Object> r : result){
+			
+			UUID search = UUID.fromString((String) r.get("uuid"));
+			
+			if(search != null){
+				
+				if(search == uuid) return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	public boolean setJobDB(UUID uuid, AbstractJob job){
+		try {
+			
+			if(!containsDB(uuid)){
+				PreparedStatement ps = EdgeCoreAPI.databaseAPI().prepareStatement("INSERT INTO edgejobs_jobs (uuid,job) VALUES (?,?);");
+				ps.setString(1, uuid.toString());
+				ps.setString(2, job.getName());
+				ps.executeUpdate();
+			}
+			else {
+				PreparedStatement ps = EdgeCoreAPI.databaseAPI().prepareStatement("UPDATE edgejobs_jobs set job = ? where uuid = ?;");
+				ps.setString(1, job.getName());
+				ps.setString(2, uuid.toString());
+				ps.executeUpdate();
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 		
 	}

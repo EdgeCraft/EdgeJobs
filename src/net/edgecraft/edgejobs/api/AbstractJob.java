@@ -67,11 +67,13 @@ public abstract class AbstractJob {
 	
 	public boolean join( Player p ) {
 		
-		if(Cuboid.getCuboid(p.getLocation()) == null || Cuboid.getCuboid(p.getLocation()).getType() != whereToStart()){
+		if(whereToStart() != null){
 			
-			p.sendMessage(LanguageHandler.getInstance().getColoredMessage(LanguageHandler.getDefaultLanguage(), "job_noregion"));
+			if(Cuboid.getCuboid(p.getLocation()) == null || Cuboid.getCuboid(p.getLocation()).getType() != whereToStart()){
+				
+				return false;
+			}
 			
-			return true;
 		}
 		
 		this.equipPlayer( p );
