@@ -69,9 +69,7 @@ public abstract class AbstractJob {
 		
 		if(Cuboid.getCuboid(p.getLocation()) == null || Cuboid.getCuboid(p.getLocation()).getType() != whereToStart()){
 			
-			p.sendMessage(LanguageHandler.getInstance().getColoredMessage(LanguageHandler.getDefaultLanguage(), "job_noregion"));
-			
-			return true;
+			return false;
 		}
 		
 		this.equipPlayer( p );

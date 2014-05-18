@@ -61,7 +61,7 @@ public class JobCommand extends AbstractCommand {
 			
 			String key = "";
 			if( joined ) key = "job_join_success";
-			else key = "job_join_failure";
+			else key = "job_noregion";
 			
 			p.sendMessage( lang.getColoredMessage( userLang, key ) );
 			return joined;
