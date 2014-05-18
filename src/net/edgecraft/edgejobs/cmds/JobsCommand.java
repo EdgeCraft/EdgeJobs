@@ -3,6 +3,7 @@ package net.edgecraft.edgejobs.cmds;
 import net.edgecraft.edgecore.EdgeCore;
 import net.edgecraft.edgecore.command.AbstractCommand;
 import net.edgecraft.edgecore.command.Level;
+import net.edgecraft.edgecore.lang.LanguageHandler;
 import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgejobs.api.AbstractJob;
 import net.edgecraft.edgejobs.api.JobManager;
@@ -27,17 +28,17 @@ public class JobsCommand extends AbstractCommand {
 	@Override
 	public boolean runImpl(Player p, User user, String[] args) throws Exception {
 		
-		p.sendMessage(lang.getColoredMessage("de", "job_list_table"));
+		p.sendMessage(lang.getColoredMessage(LanguageHandler.getDefaultLanguage(), "job_list_table"));
 		
 		for(AbstractJob job : JobManager.getInstance().getJobs())
-			p.sendMessage(lang.getColoredMessage("de", "job_list").replaceAll("[0]", job.getName()));
+			p.sendMessage(lang.getColoredMessage(LanguageHandler.getDefaultLanguage(), "job_list").replaceAll("[0]", job.getName()));
 		
 		return true;
 	}
 
 	@Override
 	public void sendUsageImpl(CommandSender sender) {
-		sender.sendMessage(EdgeCore.errorColor + "/jobs");
+		sender.sendMessage(EdgeCore.usageColor + "/jobs");
 	}
 
 	@Override

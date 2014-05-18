@@ -1,11 +1,8 @@
 package net.edgecraft.edgejobs.events;
 
-import java.sql.PreparedStatement;
-import java.util.List;
-import java.util.Map;
-
 import net.edgecraft.edgecore.EdgeCoreAPI;
 import net.edgecraft.edgecore.lang.LanguageHandler;
+import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgecore.user.UserManager;
 import net.edgecraft.edgecuboid.EdgeCuboidAPI;
 import net.edgecraft.edgecuboid.cuboid.CuboidHandler;
@@ -36,7 +33,7 @@ public class HandlePlayerEvents implements Listener {
 		
 		try {
 			
-			List<Map<String, Object>> result = EdgeCoreAPI.databaseAPI().getResults("SELECT * FROM edgejobs_jobs");
+			/*List<Map<String, Object>> result = EdgeCoreAPI.databaseAPI().getResults("SELECT * FROM edgejobs_jobs");
 			
 			boolean contains = false;
 			for(Map<String, Object> r : result){
@@ -44,12 +41,14 @@ public class HandlePlayerEvents implements Listener {
 					contains = true;
 					break;
 				}
-			}
+			}*/
 			
-			if(!contains){
-				PreparedStatement ps = EdgeCoreAPI.databaseAPI().prepareStatement("INSERT INTO edgejobs_jobs (uuid, job) VALUES (?, DEFAULT)");
-				ps.setString(1, e.getPlayer().getUniqueId().toString());
-				ps.execute();
+			User u = UserManager.getInstance().getUser(e.getPlayer().getUniqueId());
+			
+			if(!jobs.getWorkers().containsKey(u)){
+				if(jobs.hasJob(u)){
+					jobs.registerWorker(u, jobs.getJob(u));
+				}
 			}
 			
 		} catch (Exception ex) {

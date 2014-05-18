@@ -1,16 +1,17 @@
 package net.edgecraft.edgejobs.jobs;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import net.edgecraft.edgecore.EdgeCore;
+import net.edgecraft.edgecore.lang.LanguageHandler;
 import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgecuboid.cuboid.Cuboid;
 import net.edgecraft.edgecuboid.cuboid.types.CuboidType;
 import net.edgecraft.edgejobs.api.AbstractJob;
 import net.edgecraft.edgejobs.api.AbstractJobCommand;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Doctor extends AbstractJob {
 
@@ -55,7 +56,7 @@ public class Doctor extends AbstractJob {
 			final Player targetPlayer = target.getPlayer();
 			
 			if(Cuboid.getCuboid( p.getLocation() ) == null || Cuboid.getCuboid( targetPlayer.getLocation() ) == null){
-				p.sendMessage(lang.getColoredMessage("de", "job_doctor_heal_both"));
+				p.sendMessage(lang.getColoredMessage(LanguageHandler.getDefaultLanguage(), "job_doctor_heal_both"));
 				return false;
 			}
 			

@@ -1,8 +1,5 @@
 package net.edgecraft.edgejobs.cmds;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import net.edgecraft.edgecore.EdgeCore;
 import net.edgecraft.edgecore.command.AbstractCommand;
 import net.edgecraft.edgecore.command.Level;
@@ -10,6 +7,9 @@ import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgejobs.EdgeJobsAPI;
 import net.edgecraft.edgejobs.api.AbstractJob;
 import net.edgecraft.edgejobs.api.JobManager;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class JobCommand extends AbstractCommand {
 
@@ -43,7 +43,7 @@ public class JobCommand extends AbstractCommand {
 			}
 			
 			if(!JobManager.getInstance().hasJob(p)){
-				p.sendMessage(lang.getColoredMessage("de", "job_nojob"));
+				p.sendMessage(lang.getColoredMessage(userLang, "job_nojob"));
 				return true;
 			}
 			
@@ -72,7 +72,7 @@ public class JobCommand extends AbstractCommand {
 			final AbstractJob job = jobs.getJob( u );
 			
 			if(job == null){
-				p.sendMessage(lang.getColoredMessage("de", "job_nojob"));
+				p.sendMessage(lang.getColoredMessage(userLang, "job_nojob"));
 				return true;
 			}
 			
@@ -95,12 +95,12 @@ public class JobCommand extends AbstractCommand {
 			final AbstractJob job = jobs.getJob( args[3] );
 			
 			if(target == null){
-				p.sendMessage(lang.getColoredMessage("de", "notfound"));
+				p.sendMessage(lang.getColoredMessage(userLang, "notfound"));
 				return true;
 			}
 			
 			if(job == null){
-				p.sendMessage(lang.getColoredMessage("de", "job_notfound"));
+				p.sendMessage(lang.getColoredMessage(userLang, "job_notfound"));
 				return true;
 			}
 			
@@ -128,7 +128,7 @@ public class JobCommand extends AbstractCommand {
 			final User target = users.getUser( args[2] );
 			
 			if(target == null){
-				p.sendMessage(lang.getColoredMessage("de", "notfound"));
+				p.sendMessage(lang.getColoredMessage(userLang, "notfound"));
 				return true;
 			}
 			

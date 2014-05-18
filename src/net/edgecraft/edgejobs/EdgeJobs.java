@@ -59,7 +59,7 @@ public class EdgeJobs extends JavaPlugin {
 		
 		Firefighter.FireCommand.getInstance().fire();
 		
-		new DBSyncJobTask().runTaskTimer(this, 0, 20L * 60 * 25);
+		new DBSyncJobTask().runTaskTimer(this, 10L, 20L * 60 * 25);
 		
 		log.info( "[EdgeJobs] enabled." );
 	}
