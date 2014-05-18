@@ -31,7 +31,7 @@ public class Policeman extends AbstractJob {
 	
 	@Override
 	public CuboidType whereToStart() {
-		return CuboidType.PoliceStation;
+		return CuboidType.POLICESTATION;
 	}
 	
 	public final void arrest( User target, User officer ) {
@@ -39,7 +39,7 @@ public class Policeman extends AbstractJob {
 		if( target == null || officer == null  || _arrested.containsKey( target ) || !jobs.getJob( officer ).equals( this ) ) return;
 		
 		_arrested.put( target, officer );
-		target.getPlayer().teleport( cuboids.getNearestCuboid(CuboidType.Jail, target.getPlayer().getLocation() ).getSpawn() );
+		target.getPlayer().teleport( cuboids.getNearestCuboid(CuboidType.JAIL, target.getPlayer().getLocation() ).getSpawn() );
 	}
 	
 	public final void arrest( String target, String officer ) {
@@ -53,7 +53,7 @@ public class Policeman extends AbstractJob {
 		if( target == null || !_arrested.containsKey( target )) return;
 		
 		_arrested.remove( target );	
-		target.getPlayer().teleport( cuboids.getNearestCuboid( CuboidType.PoliceStation, target.getPlayer().getLocation() ).getSpawn() );
+		target.getPlayer().teleport( cuboids.getNearestCuboid( CuboidType.POLICESTATION, target.getPlayer().getLocation() ).getSpawn() );
 	}
 	
 	public final void release( String name ) {

@@ -52,11 +52,11 @@ public class HandleItemEvents implements Listener {
 	{
 		final Player p = e.getPlayer();
 		final User u = users.getUser( p.getName() );
-		final CuboidType t = CuboidType.getType( Cuboid.getCuboid( p.getLocation() ).getCuboidType() );
+		final CuboidType t = Cuboid.getCuboid( p.getLocation() ).getType();
 		
 		if( p == null || u == null || t == null ) return;
 		
-		if( t.equals( CuboidType.Survival ) && !jobs.isWorking( p ) )
+		if( t.equals( CuboidType.SURVIVAL ) && !jobs.isWorking( p ) )
 		{
 			p.sendMessage( lang.getColoredMessage( u.getLanguage(), "cuboid_nopermission" ) );
 			e.setCancelled( true );
@@ -68,11 +68,11 @@ public class HandleItemEvents implements Listener {
 	{
 		final Player p = e.getPlayer();
 		final User u = users.getUser( p.getName() );
-		final CuboidType t = CuboidType.getType( Cuboid.getCuboid( p.getLocation() ).getCuboidType() );
+		final CuboidType t = Cuboid.getCuboid( p.getLocation() ).getType();
 		
 		if( p == null || u == null || t == null ) return;
 		
-		if( t.equals( CuboidType.Survival ) && !jobs.isWorking( p ) )
+		if( t.equals( CuboidType.SURVIVAL ) && !jobs.isWorking( p ) )
 		{
 			p.sendMessage( lang.getColoredMessage( u.getLanguage(), "cuboid_nopermission" ) );
 			e.setCancelled( true );

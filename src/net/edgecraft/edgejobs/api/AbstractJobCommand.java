@@ -36,9 +36,14 @@ public abstract class AbstractJobCommand extends AbstractCommand {
 		
 		final AbstractJob job = jobs.getJob( users.getUser( sender.getName() ) );
 		
+		if(job == null){
+			sender.sendMessage(lang.getColoredMessage(LanguageHandler.getDefaultLanguage(), "job_nojob"));
+			return false;
+		}
+		
 		if( job.equals( _job ) ) return super.run( sender, args );
 		
-		sender.sendMessage( lang.getColoredMessage( LanguageHandler.getDefaultLanguage(), "job_command_wrongjob" ) );
+		sender.sendMessage( lang.getColoredMessage( LanguageHandler.getDefaultLanguage(), "job_wrongjob" ) );
 		return true;
 	}
 	

@@ -2,6 +2,7 @@ package net.edgecraft.edgejobs.events;
 
 import net.edgecraft.edgecore.EdgeCoreAPI;
 import net.edgecraft.edgecore.lang.LanguageHandler;
+import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgecore.user.UserManager;
 import net.edgecraft.edgecuboid.EdgeCuboidAPI;
 import net.edgecraft.edgecuboid.cuboid.CuboidHandler;
@@ -29,6 +30,31 @@ public class HandlePlayerEvents implements Listener {
 	
 	@EventHandler
 	public void handlePlayerJoin( PlayerJoinEvent e ) {
+		
+		try {
+			
+			/*List<Map<String, Object>> result = EdgeCoreAPI.databaseAPI().getResults("SELECT * FROM edgejobs_jobs");
+			
+			boolean contains = false;
+			for(Map<String, Object> r : result){
+				if(r.get("uuid").equals(e.getPlayer().getUniqueId().toString())){
+					contains = true;
+					break;
+				}
+			}*/
+			
+			User u = UserManager.getInstance().getUser(e.getPlayer().getUniqueId());
+			
+			if(!jobs.getWorkers().containsKey(u)){
+				if(jobs.hasJob(u)){
+					jobs.registerWorker(u, jobs.getJob(u));
+				}
+			}
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
 		jobs.setWorking( e.getPlayer(), false );
 	}
 	
@@ -70,7 +96,7 @@ public class HandlePlayerEvents implements Listener {
 		{
 			e.setCancelled( true );
 			
-			p.teleport( cuboids.getNearestCuboid( CuboidType.Hospital, p.getLocation()).getSpawn() );
+			p.teleport( cuboids.getNearestCuboid( CuboidType.HOSPITAL, p.getLocation()).getSpawn() );
 			//p.getInventory().setContents( AbstractJob.getOldPlayerInventory(p).getContents() );
 			jobs.setWorking( p, false );
 			jobs.getJob( p ).unequipPlayer( p );

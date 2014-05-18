@@ -1,16 +1,17 @@
 package net.edgecraft.edgejobs.jobs;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import net.edgecraft.edgecore.EdgeCore;
+import net.edgecraft.edgecore.lang.LanguageHandler;
 import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgecuboid.cuboid.Cuboid;
 import net.edgecraft.edgecuboid.cuboid.types.CuboidType;
 import net.edgecraft.edgejobs.api.AbstractJob;
 import net.edgecraft.edgejobs.api.AbstractJobCommand;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Doctor extends AbstractJob {
 
@@ -24,7 +25,7 @@ public class Doctor extends AbstractJob {
 	
 	
 	@Override
-	public CuboidType whereToStart() { return CuboidType.Hospital; }
+	public CuboidType whereToStart() { return CuboidType.HOSPITAL; }
 	
 	public static class HealCommand extends AbstractJobCommand {
 
@@ -54,7 +55,12 @@ public class Doctor extends AbstractJob {
 			
 			final Player targetPlayer = target.getPlayer();
 			
-			if( Cuboid.getCuboid( p.getLocation() ).equals( Cuboid.getCuboid( targetPlayer.getLocation() ) ) )
+			if(Cuboid.getCuboid( p.getLocation() ) == null || Cuboid.getCuboid( targetPlayer.getLocation() ) == null){
+				p.sendMessage(lang.getColoredMessage(LanguageHandler.getDefaultLanguage(), "job_doctor_heal_both"));
+				return false;
+			}
+			
+			if( Cuboid.getCuboid( p.getLocation() ).getType().equals( CuboidType.HOSPITAL ) && Cuboid.getCuboid( targetPlayer.getLocation() ).getType().equals( Cuboid.getCuboid( p.getLocation() )))
 			{
 				targetPlayer.addPotionEffect( new PotionEffect( PotionEffectType.REGENERATION, 20 * 5, 2 ) );
 				targetPlayer.setHealth( targetPlayer.getMaxHealth() );
@@ -72,7 +78,7 @@ public class Doctor extends AbstractJob {
 
 		@Override
 		public boolean validArgsRange( String[] args ) {
-			return ( args.length == 1 );
+			return ( args.length == 2 );
 		}
 		
 		
