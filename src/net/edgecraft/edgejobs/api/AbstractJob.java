@@ -3,6 +3,7 @@ package net.edgecraft.edgejobs.api;
 import org.bukkit.entity.Player;
 
 import net.edgecraft.edgecore.command.AbstractCommand;
+import net.edgecraft.edgecore.lang.LanguageHandler;
 import net.edgecraft.edgecuboid.EdgeCuboidAPI;
 import net.edgecraft.edgecuboid.cuboid.Cuboid;
 import net.edgecraft.edgecuboid.cuboid.CuboidHandler;
@@ -66,8 +67,13 @@ public abstract class AbstractJob {
 	
 	public boolean join( Player p ) {
 		
-		if(Cuboid.getCuboid(p.getLocation()).getType() != whereToStart()) return false;
+		if(Cuboid.getCuboid(p.getLocation()) == null || Cuboid.getCuboid(p.getLocation()).getType() != whereToStart()){
 			
+			p.sendMessage(LanguageHandler.getInstance().getColoredMessage(LanguageHandler.getDefaultLanguage(), "job_noregion"));
+			
+			return true;
+		}
+		
 		this.equipPlayer( p );
 		return jobs.setWorking( p, true );
 	}
