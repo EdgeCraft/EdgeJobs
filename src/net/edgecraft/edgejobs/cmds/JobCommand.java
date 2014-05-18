@@ -113,11 +113,13 @@ public class JobCommand extends AbstractCommand {
 			
 			String key = "";
 			
-			if( set ) key = "job_setjob_success";
+			boolean setdb = JobManager.getInstance().setJobDB(target.getUUID(), job);
+			
+			if( set && setdb ) key = "job_setjob_success";
 			else key = "job_setjob_failure";
 			
 			p.sendMessage( lang.getColoredMessage( userLang, key ) );
-			JobManager.getInstance().syncJobs();
+			
 			return set;
 		}
 		

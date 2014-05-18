@@ -67,9 +67,13 @@ public abstract class AbstractJob {
 	
 	public boolean join( Player p ) {
 		
-		if(Cuboid.getCuboid(p.getLocation()) == null || Cuboid.getCuboid(p.getLocation()).getType() != whereToStart()){
+		if(whereToStart() != null){
 			
-			return false;
+			if(Cuboid.getCuboid(p.getLocation()) == null || Cuboid.getCuboid(p.getLocation()).getType() != whereToStart()){
+				
+				return false;
+			}
+			
 		}
 		
 		this.equipPlayer( p );
