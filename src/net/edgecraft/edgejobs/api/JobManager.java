@@ -1,17 +1,29 @@
 package net.edgecraft.edgejobs.api;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.UUID;
 
 import net.edgecraft.edgecore.EdgeCoreAPI;
 import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgecore.user.UserManager;
+import net.edgecraft.edgejobs.EdgeJobs;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class JobManager {
 
@@ -21,6 +33,7 @@ public class JobManager {
 	private final ArrayList<AbstractSidejob> _sidejobs = new ArrayList<>();
 	private final ArrayList<String> _working = new ArrayList<>();
 	private final HashMap<String, AbstractJob> _workers = new HashMap<>();
+	
 	
 	private JobManager() { /* ... */ }
 	
@@ -253,5 +266,146 @@ public class JobManager {
 		
 	}
 	
+	public String getInventory(String uuid, boolean delete){
+		
+		File f = new File(EdgeJobs.invFolder + uuid + ".inv");
+		String ret = "";
+		
+		try {
+			ret = new Scanner(f).useDelimiter("\\Z").next();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		if(delete) f.delete();
+		
+		return ret;
+	}
+	public String getInventory(UUID uuid, boolean delete){
+		return getInventory(uuid.toString(), delete);
+	}
+	
+	public void saveInventory(String uuid, Inventory i){
+		
+		File f = new File(EdgeJobs.invFolder + uuid + ".inv");
+		
+		if(f.exists()) f.delete();
+		
+		try {
+			
+			f.createNewFile();
+			
+			FileWriter fw = new FileWriter(f);
+			
+			fw.write(InventoryToString(i));
+			
+			fw.flush();
+			fw.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static final JobManager getInstance() { return instance; }
+	
+	//NOT OUT CODE - http://forums.bukkit.org/threads/serialize-inventory-to-single-string-and-vice-versa.92094/
+	//i have fixed the code ;)
+	
+	public static String InventoryToString (Inventory invInventory)
+    {
+        String serialization = invInventory.getSize() + ";";
+        for (int i = 0; i < invInventory.getSize(); i++)
+        {
+            ItemStack is = invInventory.getItem(i);
+            if (is != null)
+            {
+                String serializedItemStack = new String();
+               
+                String isType = String.valueOf(is.getType().toString());
+                serializedItemStack += "t@" + isType;
+               
+                if (is.getDurability() != 0)
+                {
+                    String isDurability = String.valueOf(is.getDurability());
+                    serializedItemStack += ":d@" + isDurability;
+                }
+               
+                if (is.getAmount() != 1)
+                {
+                    String isAmount = String.valueOf(is.getAmount());
+                    serializedItemStack += ":a@" + isAmount;
+                }
+               
+                Map<Enchantment,Integer> isEnch = is.getEnchantments();
+                if (isEnch.size() > 0)
+                {
+                    for (Entry<Enchantment,Integer> ench : isEnch.entrySet())
+                    {
+                        serializedItemStack += ":e@" + ench.getKey().getName() + "@" + ench.getValue();
+                    }
+                }
+               
+                serialization += i + "#" + serializedItemStack + ";";
+            }
+        }
+        return serialization;
+    }
+   
+	public static Inventory StringToInventory (String invString)
+    {
+        String[] serializedBlocks = invString.split(";");
+        String invInfo = serializedBlocks[0];
+        Inventory deserializedInventory = Bukkit.getServer().createInventory(null, Integer.valueOf(invInfo));
+       
+        for (int i = 1; i < serializedBlocks.length; i++)
+        {
+            String[] serializedBlock = serializedBlocks[i].split("#");
+            int stackPosition = Integer.valueOf(serializedBlock[0]);
+           
+            if (stackPosition >= deserializedInventory.getSize())
+            {
+                continue;
+            }
+           
+            ItemStack is = null;
+            Boolean createdItemStack = false;
+           
+            String[] serializedItemStack = serializedBlock[1].split(":");
+            for (String itemInfo : serializedItemStack)
+            {
+                String[] itemAttribute = itemInfo.split("@");
+                if (itemAttribute[0].equals("t"))
+                {
+                	Material attr = Material.getMaterial(itemAttribute[1]);
+                	if(attr != null)
+                		is = new ItemStack(Material.getMaterial(itemAttribute[1]));
+                    createdItemStack = true;
+                }
+                else if (itemAttribute[0].equals("d") && createdItemStack)
+                {
+                	Short attr = Short.valueOf(itemAttribute[1]);
+                	if(attr != null)
+                		is.setDurability(Short.valueOf(itemAttribute[1]));
+                }
+                else if (itemAttribute[0].equals("a") && createdItemStack)
+                {
+                	Integer attr = Integer.valueOf(itemAttribute[1]);
+                	if(attr != null)
+                		is.setAmount(Integer.valueOf(itemAttribute[1]));
+                }
+                else if (itemAttribute[0].equals("e") && createdItemStack)
+                {
+                	Enchantment attr = Enchantment.getByName(itemAttribute[1]);
+                	if(attr != null)
+                		is.addEnchantment(attr, Integer.valueOf(itemAttribute[2]));
+                }
+            }
+            deserializedInventory.setItem(stackPosition, is);
+        }
+       
+        return deserializedInventory;
+    }
+	
 }
