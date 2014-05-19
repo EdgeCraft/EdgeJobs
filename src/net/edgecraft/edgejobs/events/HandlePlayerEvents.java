@@ -4,7 +4,6 @@ import net.edgecraft.edgecore.EdgeCoreAPI;
 import net.edgecraft.edgecore.lang.LanguageHandler;
 import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgecore.user.UserManager;
-import net.edgecraft.edgecuboid.EdgeCuboidAPI;
 import net.edgecraft.edgecuboid.cuboid.CuboidHandler;
 import net.edgecraft.edgecuboid.cuboid.types.CuboidType;
 import net.edgecraft.edgejobs.EdgeJobsAPI;
@@ -25,7 +24,6 @@ public class HandlePlayerEvents implements Listener {
 
 	private static final UserManager users = EdgeCoreAPI.userAPI();
 	private static final LanguageHandler lang = EdgeCoreAPI.languageAPI();
-	private static final CuboidHandler cuboids = EdgeCuboidAPI.cuboidAPI();
 	private static final JobManager jobs = EdgeJobsAPI.jobsAPI();
 	
 	@EventHandler
@@ -81,7 +79,7 @@ public class HandlePlayerEvents implements Listener {
 		
 		p.addPotionEffect( new PotionEffect( PotionEffectType.WEAKNESS, 100, 2 ) );
 		p.setHealth( p.getMaxHealth() / 10 );
-		p.teleport( cuboids.getNearestCuboid( job.whereToStart(), p.getLocation() ).getSpawn() );
+		p.teleport( CuboidHandler.getNearestCuboid( job.whereToStart(), p.getLocation() ).getSpawn() );
 		job.unequipPlayer( p );
 	}
 	
@@ -96,7 +94,7 @@ public class HandlePlayerEvents implements Listener {
 		{
 			e.setCancelled( true );
 			
-			p.teleport( cuboids.getNearestCuboid( CuboidType.HOSPITAL, p.getLocation()).getSpawn() );
+			p.teleport( CuboidHandler.getNearestCuboid( CuboidType.HOSPITAL, p.getLocation()).getSpawn() );
 			//p.getInventory().setContents( AbstractJob.getOldPlayerInventory(p).getContents() );
 			jobs.setWorking( p, false );
 			jobs.getJob( p ).unequipPlayer( p );

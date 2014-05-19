@@ -1,5 +1,6 @@
 package net.edgecraft.edgejobs;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import net.edgecraft.edgecore.EdgeCore;
@@ -26,6 +27,7 @@ public class EdgeJobs extends JavaPlugin {
 	public static final Logger log = EdgeCore.log;
 	private static EdgeJobs instance;
 	private static final String jobsTable = "edgejobs_jobs";
+	public static final String invFolder = "plugins/EdgeJobs/inv/";
 	
 	private static final JobManager _jobs = JobManager.getInstance();
 	
@@ -46,7 +48,10 @@ public class EdgeJobs extends JavaPlugin {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
+		File inv = new File(invFolder);
+		if(! inv.exists() ) inv.mkdirs();
+		
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import net.edgecraft.edgecore.EdgeCore;
 import net.edgecraft.edgecore.EdgeCoreAPI;
 import net.edgecraft.edgecore.user.User;
 import net.edgecraft.edgecore.user.UserManager;
+import net.edgecraft.edgecuboid.cuboid.CuboidHandler;
 import net.edgecraft.edgecuboid.cuboid.types.CuboidType;
 import net.edgecraft.edgejobs.api.AbstractJob;
 import net.edgecraft.edgejobs.api.AbstractJobCommand;
@@ -39,7 +40,7 @@ public class Policeman extends AbstractJob {
 		if( target == null || officer == null  || _arrested.containsKey( target ) || !jobs.getJob( officer ).equals( this ) ) return;
 		
 		_arrested.put( target, officer );
-		target.getPlayer().teleport( cuboids.getNearestCuboid(CuboidType.JAIL, target.getPlayer().getLocation() ).getSpawn() );
+		target.getPlayer().teleport( CuboidHandler.getNearestCuboid(CuboidType.JAIL, target.getPlayer().getLocation() ).getSpawn() );
 	}
 	
 	public final void arrest( String target, String officer ) {
@@ -53,7 +54,7 @@ public class Policeman extends AbstractJob {
 		if( target == null || !_arrested.containsKey( target )) return;
 		
 		_arrested.remove( target );	
-		target.getPlayer().teleport( cuboids.getNearestCuboid( CuboidType.POLICESTATION, target.getPlayer().getLocation() ).getSpawn() );
+		target.getPlayer().teleport( CuboidHandler.getNearestCuboid( CuboidType.POLICESTATION, target.getPlayer().getLocation() ).getSpawn() );
 	}
 	
 	public final void release( String name ) {

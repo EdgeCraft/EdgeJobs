@@ -1,14 +1,14 @@
 package net.edgecraft.edgejobs.api;
 
-import org.bukkit.entity.Player;
-
 import net.edgecraft.edgecore.command.AbstractCommand;
-import net.edgecraft.edgecore.lang.LanguageHandler;
 import net.edgecraft.edgecuboid.EdgeCuboidAPI;
 import net.edgecraft.edgecuboid.cuboid.Cuboid;
 import net.edgecraft.edgecuboid.cuboid.CuboidHandler;
 import net.edgecraft.edgecuboid.cuboid.types.CuboidType;
 import net.edgecraft.edgejobs.EdgeJobsAPI;
+
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 public abstract class AbstractJob {
 
@@ -56,13 +56,17 @@ public abstract class AbstractJob {
 	
 	public final void equipPlayer( Player p ) {
 		if( p == null ) return; // TODO
+		saveInventory( p );
+		p.getInventory().clear();
 		equipPlayerImpl( p );
 	}
 	
 	public final void unequipPlayer( Player p ) {
 		if( p == null ) return;
-		
-		p.getInventory().clear(); //TODO:
+		p.getInventory().clear();
+		JobManager.getInstance();
+		Inventory inv = JobManager.StringToInventory(JobManager.getInstance().getInventory(p.getUniqueId(), true));
+		p.getInventory().setContents(inv.getContents());
 	}
 	
 	public boolean join( Player p ) {
@@ -80,6 +84,13 @@ public abstract class AbstractJob {
 		return jobs.setWorking( p, true );
 	}
 	
+	private void saveInventory( Player p ){
+		
+		Inventory inv = p.getInventory();
+		
+		JobManager.getInstance().saveInventory(p.getUniqueId().toString(), inv);
+	}
+		
 	public boolean leave( Player p ) {
 		if( !jobs.isWorking( p ) ) return false;
 		
