@@ -1,14 +1,13 @@
 package net.edgecraft.edgejobs.api;
 
-import org.bukkit.entity.Player;
-
 import net.edgecraft.edgecore.command.AbstractCommand;
-import net.edgecraft.edgecore.lang.LanguageHandler;
 import net.edgecraft.edgecuboid.EdgeCuboidAPI;
 import net.edgecraft.edgecuboid.cuboid.Cuboid;
 import net.edgecraft.edgecuboid.cuboid.CuboidHandler;
 import net.edgecraft.edgecuboid.cuboid.types.CuboidType;
 import net.edgecraft.edgejobs.EdgeJobsAPI;
+
+import org.bukkit.entity.Player;
 
 public abstract class AbstractJob {
 

@@ -1,20 +1,19 @@
 package net.edgecraft.edgejobs.jobs;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import net.edgecraft.edgecore.EdgeCore;
 import net.edgecraft.edgecore.command.AbstractCommand;
 import net.edgecraft.edgecore.command.Level;
 import net.edgecraft.edgecore.user.User;
-import net.edgecraft.edgecuboid.EdgeCuboidAPI;
 import net.edgecraft.edgecuboid.cuboid.Cuboid;
 import net.edgecraft.edgecuboid.cuboid.CuboidHandler;
 import net.edgecraft.edgecuboid.cuboid.types.CuboidType;
 import net.edgecraft.edgejobs.EdgeJobs;
 import net.edgecraft.edgejobs.api.AbstractJob;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class Firefighter extends AbstractJob {
 
@@ -33,7 +32,6 @@ public class Firefighter extends AbstractJob {
 		private static final FireCommand instance = new FireCommand();
 		
 		private boolean enabled = true;
-		private static final CuboidHandler cuboids = EdgeCuboidAPI.cuboidAPI();
 		
 		private FireCommand() { /* ... */ }
 		
